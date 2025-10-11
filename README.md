@@ -1,4 +1,23 @@
-# Películas - notas rápidas de desarrollo
+# Películas
+
+UI cinematográfica con carrusel y backend mínimo (Spring Boot) para cuentas/planes.
+
+
+## Demo en vivo
+
+[![Ver el sitio](https://img.shields.io/badge/VER_SITIO-GitHub_Pages-red?style=for-the-badge)](https://rednatsumic.github.io/peliculas/)
+
+Enlace directo: https://rednatsumic.github.io/peliculas/
+
+
+## Notas
+- Este enlace publica solo el frontend (GitHub Pages). Las rutas del backend (/login, /register, /app/**) requieren desplegar el servidor aparte.
+- Si algún asset no cargara, refresca con Ctrl+F5; el workflow copia `src/main/resources/static/`.
+
+
+## Ejecutar local
+- Frontend: abre `src/main/resources/static/index.html` con Live Server.
+- Backend: `./gradlew bootRun` (Java 17). App en http://localhost:8080# Películas - notas rápidas de desarrollo
 
 Este README explica por qué los estilos podían no cargarse y cómo probar la interfaz rápidamente usando Live Server.
 

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Redirigiendo…</title>
+    <meta http-equiv="refresh" content="0;url=./">
+    <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;padding:2rem;color:#eee;background:#0b0b0f} .box{max-width:560px;margin:10vh auto;text-align:center} a{color:#ff4d4f}</style>
+  </head>
+  <body>
+    <div class="box">
+      <h1>Redirigiendo…</h1>
+      <p>Si no eres redirigido automáticamente, <a id="back" href="./">haz clic aquí</a>.</p>
+    </div>
+    <script>
+      (function(){
+        try {
+          var parts = location.pathname.split('/').filter(Boolean);
+          var base = parts.length ? '/' + parts[0] + '/' : '/';
+          // En un site de proyecto, base será /<repo>/; en local suele ser '/'
+          var target = base;
+          document.getElementById('back').setAttribute('href', target);
+          // Evita loops: si ya estamos en base, no redirige
+          if (location.pathname !== target) {
+            location.replace(target);
+          }
+        } catch (e) { /* no-op */ }
+      })();
+    </script>
+  </body>
+</html>

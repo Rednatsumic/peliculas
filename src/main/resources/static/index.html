@@ -17,7 +17,7 @@
           <h1 class="brand">Películas</h1>
         </div>
         <nav class="main-nav">
-          <a href="/">Inicio</a>
+          <a href="./">Inicio</a>
           <a href="/login">Ingresar</a>
           <a href="/register">Crear cuenta</a>
         </nav>
@@ -318,6 +318,21 @@
   <script src="js/carousel.snap.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/trailer.js"></script>
+  <script>
+    // Adaptador GitHub Pages: si el sitio está bajo /<usuario>.github.io/<repo>/,
+    // reescribe enlaces absolutos del mismo host a relativos del proyecto.
+    (function(){
+      var isPages = /\.github\.io$/.test(location.hostname) || location.pathname.split('/').length > 2;
+      if (!isPages) return;
+      var baseParts = location.pathname.split('/').filter(Boolean);
+      var base = baseParts.length ? '/' + baseParts[0] + '/' : '/';
+      document.querySelectorAll('a[href^="/"]').forEach(function(a){
+        var href = a.getAttribute('href');
+        if (href.startsWith('/login') || href.startsWith('/register') || href.startsWith('/app/')) return; // backend
+        a.setAttribute('href', '.' + href);
+      });
+    })();
+  </script>
 
   <!-- Modal de tráiler: abre un iframe de YouTube con autoplay; cerrar limpia el src -->
   <div id="trailerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="trailer-title">

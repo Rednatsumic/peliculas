@@ -1,3 +1,23 @@
+# Archivos/Carpetas de Gradle y build
+.gradle/
+build/
+out/
+bin/
+
+# IDEs/editores
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# SO / otros
+.DS_Store
+Thumbs.db
+*.log
+
+# VS Code
+.vscode/
 HELP.md
 .gradle
 build/

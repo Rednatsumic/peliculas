@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crear cuenta</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .auth { min-height: 100vh; display:grid; place-items:center; background:#0a0a0a; }
+    .auth-card { width:min(520px, 92vw); background:#111; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1.5rem; color:#fff; box-shadow:0 20px 60px rgba(0,0,0,0.6); }
+    .auth-card h1{ margin:0 0 1rem; font-size:1.5rem; }
+    .auth-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
+    .auth-card label{ display:block; color:rgba(255,255,255,0.9); }
+    .auth-card input, .auth-card select{ width:100%; padding:0.65rem 0.75rem; border-radius:6px; border:1px solid rgba(255,255,255,0.15); background:#0f0f0f; color:#fff; }
+    .auth-actions{ margin-top:1rem; display:flex; justify-content:space-between; align-items:center; }
+    .auth a{ color:#ff0000; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <main class="auth">
+    <form class="auth-card" method="post" action="/register" xmlns:th="http://www.thymeleaf.org">
+      <h1>Crear cuenta</h1>
+      <p th:if="${error}" th:text="${error}" style="color:#ff6; background:#331; padding:0.5rem; border-radius:6px; margin-bottom:0.5rem;"></p>
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+      <div class="auth-grid">
+        <div>
+          <label for="username">Usuario</label>
+          <input id="username" name="username" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required>
+        </div>
+        <div>
+          <label for="password">Contraseña</label>
+          <input id="password" name="password" type="password" required>
+        </div>
+        <div>
+          <label for="plan">Plan</label>
+          <select id="plan" name="plan" required>
+            <option value="BRONCE">Bronce</option>
+            <option value="PLATA">Plata</option>
+            <option value="ORO">Oro</option>
+          </select>
+        </div>
+      </div>
+      <div class="auth-actions">
+        <a href="/login">Ya tengo cuenta</a>
+        <button class="btn" type="submit">Registrarme</button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

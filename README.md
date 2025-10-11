@@ -62,3 +62,52 @@ Cómo ejecutar:
 Notas:
 - La plantilla es una versión estática basada en el PDF que proporcionaste. Podemos iterar sobre el diseño, añadir imágenes y componentes interactivos según prefieras.
 - Si quieres usar Thymeleaf para contenido dinámico, dime qué datos quieres mostrar y los enlazo al controlador.
+
+---
+
+## Guía rápida de interfaz (ES)
+
+Esta sección resume cómo alternar entre las dos variantes de carrusel, ajustar parámetros y editar el tráiler e imágenes. Todo el código tiene comentarios en español para facilitar el mantenimiento.
+
+### Vista previa con Live Server
+- Raíz a servir: `src/main/resources/static`
+- Archivo de entrada: `index.html`
+- Rutas relativas ya listas: `css/styles.css`, `js/*.js`, `images/*`.
+
+### Carrusel: dos variantes
+Hay dos implementaciones, puedes elegir según prioridad de UX:
+
+- Scroll‑snap (ACTUAL)
+   - Script: `js/carousel.snap.js`
+   - Ventajas: desplazamiento táctil nativo, menos JS, comportamiento fluido.
+
+- Coverflow (alternativa)
+   - Script: `js/carousel.coverflow.js`
+   - Ventajas: efecto de enfoque con escala/desenfoque y sensación 3D.
+
+Cómo alternar entre modos:
+1. Abre `src/main/resources/static/index.html`.
+2. Cambia el script del carrusel:
+    - Scroll‑snap: `<script src="js/carousel.snap.js"></script>`
+    - Coverflow: `<script src="js/carousel.coverflow.js"></script>`
+
+### Parámetros que puedes ajustar
+- `K` (clones por lado): típicamente `1..3`.
+- Autoplay: intervalo por defecto `3500ms`. Puedes cambiarlo o desactivarlo comentando el `setInterval`.
+- Dots: se generan dinámicamente según cantidad de slides reales.
+
+Dónde tocar:
+- Scroll‑snap: ver sección “Ajustes” en `js/carousel.snap.js`.
+- Coverflow: ver encabezado y creación de clones en `js/carousel.coverflow.js`.
+
+### Tráiler (modal)
+- Controlador: `js/trailer.js`.
+- Cambiar video: actualiza `data-video` en los elementos del HTML (botón “Ver tráiler” y botón de play en el póster).
+- Cierre: overlay, botón ✕ o tecla ESC. Al cerrar se limpia el `src` del iframe para detener la reproducción.
+
+### Hero e imágenes
+- Fondo del hero: capas con gradientes + `image-set` (`hero.webp`/`hero.jpg`) y placeholders `hero-dark.svg`/`hero-bg.svg`.
+- Reemplaza `images/movie-*.svg` por afiches reales (`.webp`/`.jpg`). Mantén proporciones similares.
+
+### Sugerencias de rendimiento
+- Si notas tirones, reduce la intensidad de `box-shadow` en `.slide.active` y/o disminuye `gap` en `.carousel-track`.

@@ -1,6 +1,12 @@
-// Coverflow version snapshot (saved)
-// This file mirrors the current carousel.js implementation as a backup.
-// If you want to switch back, change the script src in index.html to this file.
+// Versión coverflow (basada en transform)
+// Comportamiento:
+// - Usa translateX para centrar la diapositiva activa y añade las clases
+//   active/prev/next para un efecto tipo coverflow (escala/desenfoque vía CSS).
+// - Clona K slides en ambos extremos; al terminar la transición (transitionend)
+//   salta de forma imperceptible cuando entra en un clon para mantener el bucle infinito.
+// - Crea los puntos (dots) de forma dinámica y los sincroniza con el índice normalizado.
+// Controles: botones, flechas de teclado, swipe, autoplay con pausa al pasar el mouse.
+// Cómo usar: para activar esta versión, carga js/carousel.coverflow.js en index.html
 
 document.addEventListener('DOMContentLoaded', () => {
 	const carousel = document.getElementById('movieCarousel');
@@ -16,12 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
 	let startX = 0;
 	let deltaX = 0;
 
-	// Original slides
+	// Diapositivas originales
 	let origSlides = Array.from(track.querySelectorAll('.slide'));
 	const origCount = origSlides.length;
 	if (origCount === 0) return;
 
-	// Build dots dynamically
+	// Construir puntos (dots) dinámicamente
 	let dots = [];
 	if (dotsWrap) {
 		dotsWrap.innerHTML = '';
@@ -35,8 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
-	// Clone edges for infinite loop (giratorio)
-	const K = Math.min(2, origCount); // clones on each side
+	// Clonar extremos para bucle infinito (giratorio)
+	const K = Math.min(2, origCount); // clones a cada lado
 	const fragPre = document.createDocumentFragment();
 	const fragPost = document.createDocumentFragment();
 	for (let i = origCount - K; i < origCount; i++) {
@@ -53,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	track.appendChild(fragPost);
 
 	let allSlides = Array.from(track.querySelectorAll('.slide'));
-	let current = K; // start at first real slide
+	let current = K; // empezar en la primera diapositiva real
 
 	function getGap() {
 		const style = getComputedStyle(track);
@@ -79,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		else track.style.transition = '';
 		track.style.transform = `translateX(${x}px)`;
 		if (!withTransition) {
-			// force reflow then restore transition
+			// Forzar reflow y luego restaurar transición
 			void track.offsetHeight;
 			track.style.transition = '';
 		}
@@ -92,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	function update(withTransition = true) {
 		const tx = computeTransform();
 		setTransform(tx, withTransition);
-		// active classes
+		// Clases de estado (activa, anterior, siguiente)
 		allSlides.forEach(s => s.classList.remove('active','prev','next'));
 		if (allSlides[current]) {
 			allSlides[current].classList.add('active');
@@ -101,11 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
 			allSlides[prevIdx]?.classList.add('prev');
 			allSlides[nextIdx]?.classList.add('next');
 		}
-		// dots
+		// Actualizar dots
 		dots.forEach((d, i) => d.classList.toggle('active', i === normalizedIndex()));
 	}
 
-	// Seamless jump when we land in clones
+	// Salto imperceptible cuando caemos en un clon
 	track.addEventListener('transitionend', () => {
 		if (current < K) {
 			current += origCount;
@@ -114,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			current -= origCount;
 			update(false);
 		} else {
-			// Regular transition end: ensure active classes are correct
+			// Fin de transición normal: asegurar que las clases activas estén correctas
 			update(false);
 		}
 	});
@@ -124,12 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		update();
 	}
 
-	// Controls
+	// Controles
 	prev.addEventListener('click', () => goTo(current - 1));
 	next.addEventListener('click', () => goTo(current + 1));
 	dots.forEach((d, i) => d.addEventListener('click', () => goTo(K + i)));
 
-	// Keyboard navigation
+	// Navegación por teclado
 	carousel.addEventListener('keydown', (e) => {
 		if (e.key === 'ArrowLeft') prev.click();
 		if (e.key === 'ArrowRight') next.click();
@@ -147,12 +153,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		deltaX = 0; isTouch = false; autoplay = setInterval(() => next.click(), 3500);
 	});
 
-	// Autoplay (pause on hover)
+	// Reproducción automática (autoplay) con pausa al pasar el mouse
 	let autoplay = setInterval(() => { if (!isTouch) next.click(); }, 3500);
 	carousel.addEventListener('mouseover', () => clearInterval(autoplay));
 	carousel.addEventListener('mouseleave', () => { autoplay = setInterval(() => next.click(), 3500); });
 
-	// Init and responsive
+	// Inicialización y comportamiento responsivo
 	update(false);
 	window.addEventListener('resize', () => setTimeout(() => update(), 120));
 });

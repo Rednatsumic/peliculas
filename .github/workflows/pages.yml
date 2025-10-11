@@ -1,0 +1,46 @@
+# Despliegue de la UI estática a GitHub Pages
+# - Publica el contenido de src/main/resources/static
+# - No incluye el backend de Spring Boot (solo frontend)
+# - Habilitar Pages en el repo: Settings > Pages > Source: GitHub Actions
+
+name: deploy-pages
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Preparar sitio estático
+        run: |
+          mkdir -p public
+          cp -r peliculas/src/main/resources/static/* public/
+      - name: Subir artefacto de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Desplegar a GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -17,20 +17,54 @@
           <h1 class="brand">Películas</h1>
         </div>
         <nav class="main-nav">
-          <a href="#">Inicio</a>
-          <a href="#">Cartelera</a>
-          <a href="#">Contacto</a>
+          <a href="/">Inicio</a>
+          <a href="/login">Ingresar</a>
+          <a href="/register">Crear cuenta</a>
         </nav>
       </div>
     </header>
 
-    <main class="hero">
-      <div class="container">
-        <h2 class="hero-title">Tu cine favorito, ahora en línea</h2>
-        <p class="hero-subtitle">Explora las últimas películas, horarios y compra tus entradas fácilmente.</p>
-        <a class="cta" href="#">Ver cartelera</a>
+  <!-- Hero promocional: dos columnas (copy + póster) con fondo cinematográfico -->
+  <main class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="hero-kicker">Novedad</p>
+          <h2 class="hero-title">Prepárate para el final</h2>
+          <!-- Subtítulo editable desde HTML (o más adelante dinámico) -->
+          <p class="hero-subtitle">El capítulo más épico llega a la pantalla grande. Compra tus entradas antes de que se agoten.</p>
+          <div class="hero-actions">
+            <a class="cta" href="/app/catalog">Ir al catálogo</a>
+            <a class="btn-ghost" href="#" data-video="wFGEMfyAQtI">Ver tráiler</a>
+          </div>
+        </div>
+  <!-- Póster destacado con botón de play; reemplaza la imagen por tu poster real -->
+  <div class="hero-poster">
+          <div class="poster-wrap">
+            <img src="images/movie-1.svg" alt="Poster destacado" />
+            <button class="play-btn" aria-label="Reproducir tráiler" data-video="wFGEMfyAQtI">▶</button>
+          </div>
+        </div>
       </div>
     </main>
+
+  <!-- Vistos recientemente: rail horizontal de mini‑posters -->
+    <section class="recent-section">
+      <div class="container">
+        <h2 class="section-title">Vistos recientemente</h2>
+      </div>
+  <div class="recent-rail">
+        <div class="recent-fade left"></div>
+        <ul class="recent-list">
+          <li class="recent-item"><img src="images/movie-2.svg" alt="Reciente 1"></li>
+          <li class="recent-item"><img src="images/movie-3.svg" alt="Reciente 2"></li>
+          <li class="recent-item"><img src="images/movie-1.svg" alt="Reciente 3"></li>
+          <li class="recent-item"><img src="images/movie-2.svg" alt="Reciente 4"></li>
+          <li class="recent-item"><img src="images/movie-3.svg" alt="Reciente 5"></li>
+          <li class="recent-item"><img src="images/movie-1.svg" alt="Reciente 6"></li>
+        </ul>
+        <div class="recent-fade right"></div>
+      </div>
+    </section>
 
     <!-- Carousel de películas -->
     <section class="carousel-section">
@@ -210,7 +244,7 @@
               <li>10% descuento en combos</li>
               <li>Beneficios básicos</li>
             </ul>
-            <button class="btn">Elegir plan</button>
+            <a class="btn" href="/register">Elegir plan</a>
           </article>
           <article class="plan-card featured">
             <h3 class="plan-name">Plan dorado</h3>
@@ -220,7 +254,7 @@
               <li>30% descuento en combos</li>
               <li>Acceso anticipado a estrenos</li>
             </ul>
-            <button class="btn">Contratar</button>
+            <a class="btn" href="/register">Contratar</a>
           </article>
           <article class="plan-card">
             <h3 class="plan-name">Plan plateado</h3>
@@ -230,7 +264,7 @@
               <li>20% descuento en combos</li>
               <li>Selección de asientos preferenciales</li>
             </ul>
-            <button class="btn">Elegir plan</button>
+            <a class="btn" href="/register">Elegir plan</a>
           </article>
         </div>
       </div>
@@ -280,8 +314,23 @@
         <p>© 2025 Películas - Todos los derechos reservados</p>
       </div>
     </footer>
-  <!-- Cambiar a scroll-snap version para pruebas -->
+  <!-- Carrusel: estás usando scroll-snap (carousel.snap.js). Para volver a coverflow -> usa carousel.coverflow.js -->
   <script src="js/carousel.snap.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/trailer.js"></script>
+
+  <!-- Modal de tráiler: abre un iframe de YouTube con autoplay; cerrar limpia el src -->
+  <div id="trailerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="trailer-title">
+    <div class="modal-overlay" data-close></div>
+    <div class="modal-dialog" role="document">
+      <button class="modal-close" aria-label="Cerrar" data-close>✕</button>
+      <h3 id="trailer-title" class="modal-title">Tráiler</h3>
+      <div class="video-wrap">
+        <iframe id="trailerFrame" src="" title="YouTube video" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
   </body>
 </html>

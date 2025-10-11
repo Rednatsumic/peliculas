@@ -1,4 +1,13 @@
-// Scroll-snap based carousel with infinite loop and dynamic dots
+// Carrusel basado en scroll-snap con bucle infinito y dots dinámicos
+// Comportamiento:
+// - Usa el scroll horizontal nativo con scroll-snap para centrar las tarjetas.
+// - Crea K clones en ambos extremos para simular un bucle infinito.
+// - Al finalizar el scroll, elige la slide más cercana al centro del viewport.
+// - Crea los puntos (dots) de forma dinámica y los mantiene sincronizados.
+// Controles: botones (prev/next), flechas del teclado, scroll táctil, autoplay.
+// Ajustes:
+// - Cambia K (clones por lado) entre 1..3 según el ancho de la tarjeta.
+// - Ajusta el intervalo de autoplay (3500ms) o desactívalo comentando el setInterval.
 (function(){
   document.addEventListener('DOMContentLoaded', () => {
     const root = document.getElementById('movieCarousel');
@@ -14,7 +23,7 @@
     const count = slides.length;
     if(count === 0) return;
 
-    // Build dots dynamically
+  // Construir dots dinámicamente
     dotsWrap && (dotsWrap.innerHTML = '');
     const dots = [];
     if(dotsWrap){
@@ -26,7 +35,7 @@
       }
     }
 
-    // Infinite: clone head/tail
+  // Infinito: clonar cabeza/cola
     const K = Math.min(2, count);
     const pre = document.createDocumentFragment();
     const post = document.createDocumentFragment();
@@ -36,7 +45,7 @@
     track.appendChild(post);
 
     slides = Array.from(track.querySelectorAll('.slide'));
-    let current = K; // first real
+  let current = K; // primera real
 
     function getGap(){ const st = getComputedStyle(track); return parseFloat(st.gap) || 16; }
     function slideWidth(){ const el = slides[current]; return el ? el.getBoundingClientRect().width + getGap() : 0; }
@@ -60,12 +69,12 @@
       slides[(current+1)%slides.length]?.classList.add('next');
     }
 
-    // Handle snap end (using scroll)
+  // Detectar fin del snap (usando scroll)
     let snapTimer;
     viewport.addEventListener('scroll', ()=>{
       clearTimeout(snapTimer);
       snapTimer = setTimeout(()=>{
-        // pick the slide closest to center of viewport
+  // elegir la slide más cercana al centro del viewport
         const vw = viewport.getBoundingClientRect().width;
         const center = viewport.scrollLeft + vw/2;
         let best = 0; let bestDist = Infinity; let acc = 0;
@@ -77,34 +86,34 @@
           acc += w;
         }
         current = best; updateClasses(); updateDots();
-        // seamless loop corrections
+  // correcciones para el bucle continuo sin saltos visibles
         if(current < K){ current += count; centerTo(current, false); }
         else if(current >= K+count){ current -= count; centerTo(current, false); }
       }, 90);
     }, { passive: true });
 
-    // Controls
+  // Controles
     prev.addEventListener('click', ()=> centerTo(current-1));
     next.addEventListener('click', ()=> centerTo(current+1));
     dots.forEach((d,i)=> d.addEventListener('click', ()=> centerTo(K+i)));
 
-    // Keyboard
+  // Teclado
     root.addEventListener('keydown', e=>{
       if(e.key==='ArrowLeft') prev.click();
       if(e.key==='ArrowRight') next.click();
     });
 
-    // Touch: native scroll already; just pause autoplay
+  // Touch: el scroll ya es nativo; solo pausamos el autoplay
     let isTouch=false; let autoplay;
     viewport.addEventListener('touchstart', ()=>{ isTouch=true; clearInterval(autoplay); }, {passive:true});
     viewport.addEventListener('touchend', ()=>{ isTouch=false; autoplay = setInterval(()=> next.click(), 3500); });
 
-    // Autoplay
+  // Reproducción automática (autoplay)
     autoplay = setInterval(()=>{ if(!isTouch) next.click(); }, 3500);
     root.addEventListener('mouseover', ()=> clearInterval(autoplay));
     root.addEventListener('mouseleave', ()=> { autoplay = setInterval(()=> next.click(), 3500); });
 
-    // Init
+  // Inicialización
     centerTo(current, false);
     window.addEventListener('resize', ()=> setTimeout(()=> centerTo(current, false), 120));
   });

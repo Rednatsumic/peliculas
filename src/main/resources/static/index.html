@@ -342,11 +342,11 @@
       document.querySelectorAll('a[href^="/"]').forEach(function(a){
         var href = a.getAttribute('href');
         if (href === '/login') {
-          a.setAttribute('href', backend ? backend.replace(/\/$/, '') + '/login' : './login.html#login');
+          a.setAttribute('href', backend ? backend.replace(/\/$/, '') + '/login' : './login/');
           return;
         }
         if (href === '/register') {
-          a.setAttribute('href', backend ? backend.replace(/\/$/, '') + '/register' : './login.html#register');
+          a.setAttribute('href', backend ? backend.replace(/\/$/, '') + '/register' : './register/');
           return;
         }
         if (href.startsWith('/app/')) return; // enlaces del backend real

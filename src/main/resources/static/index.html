@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Películas - Inicio (Live)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand-wrap">
+          <img src="images/logo-red.svg" alt="Películas" class="brand-logo" />
+          <h1 class="brand">Películas</h1>
+        </div>
+        <nav class="main-nav">
+          <a href="#">Inicio</a>
+          <a href="#">Cartelera</a>
+          <a href="#">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="hero">
+      <div class="container">
+        <h2 class="hero-title">Tu cine favorito, ahora en línea</h2>
+        <p class="hero-subtitle">Explora las últimas películas, horarios y compra tus entradas fácilmente.</p>
+        <a class="cta" href="#">Ver cartelera</a>
+      </div>
+    </main>
+
+    <!-- Carousel de películas -->
+    <section class="carousel-section">
+      <div class="container">
+        <div class="carousel" id="movieCarousel" aria-roledescription="carousel">
+          <button class="carousel-btn prev" aria-label="Anterior">‹</button>
+          <div class="carousel-viewport">
+            <ul class="carousel-track" role="list">
+              <li class="slide active" role="listitem" tabindex="0">
+                <img src="images/movie-1.svg" alt="Película 1">
+                <div class="slide-info">
+                  <h4>Película 1</h4>
+                  <p>Acción • 2025</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-2.svg" alt="Película 2">
+                <div class="slide-info">
+                  <h4>Película 2</h4>
+                  <p>Drama • 2024</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-3.svg" alt="Película 3">
+                <div class="slide-info">
+                  <h4>Película 3</h4>
+                  <p>Comedia • 2023</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-1.svg" alt="Película 4">
+                <div class="slide-info">
+                  <h4>Película 4</h4>
+                  <p>Acción • 2022</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-2.svg" alt="Película 5">
+                <div class="slide-info">
+                  <h4>Película 5</h4>
+                  <p>Thriller • 2021</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-3.svg" alt="Película 6">
+                <div class="slide-info">
+                  <h4>Película 6</h4>
+                  <p>Animación • 2020</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-1.svg" alt="Película 7">
+                <div class="slide-info">
+                  <h4>Película 7</h4>
+                  <p>Acción • 2019</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-2.svg" alt="Película 8">
+                <div class="slide-info">
+                  <h4>Película 8</h4>
+                  <p>Drama • 2018</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-3.svg" alt="Película 9">
+                <div class="slide-info">
+                  <h4>Película 9</h4>
+                  <p>Sci‑Fi • 2017</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="images/movie-1.svg" alt="Película 10">
+                <div class="slide-info">
+                  <h4>Película 10</h4>
+                  <p>Aventura • 2016</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <button class="carousel-btn next" aria-label="Siguiente">›</button>
+          <div class="carousel-dots" role="tablist" aria-label="Seleccionar película">
+            <button class="dot active" data-index="0" aria-label="Ir a Película 1"></button>
+            <button class="dot" data-index="1" aria-label="Ir a Película 2"></button>
+            <button class="dot" data-index="2" aria-label="Ir a Película 3"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features container">
+      <article class="feature">
+        <h3>Cartelera</h3>
+        <p>Consulta las funciones diarias y filtra por sala o género.</p>
+      </article>
+      <article class="feature">
+        <h3>Comprar entradas</h3>
+        <p>Selecciona butacas y paga de forma segura.</p>
+      </article>
+      <article class="feature">
+        <h3>Promociones</h3>
+        <p>Aprovecha descuentos y paquetes familiares.</p>
+      </article>
+    </section>
+
+    <!-- Noticias -->
+    <section class="news-section">
+      <div class="container">
+        <h2 class="section-title">Noticias</h2>
+        <div class="news-grid">
+          <article class="news-card">
+            <img class="news-image" src="images/movie-1.svg" alt="Noticia 1" />
+            <div class="news-content">
+              <h3 class="news-title">El estreno del mes</h3>
+              <p class="news-excerpt">Descubre todo sobre el estreno más esperado del mes y cómo conseguir tus entradas anticipadas.</p>
+            </div>
+          </article>
+          <article class="news-card">
+            <img class="news-image" src="images/movie-2.svg" alt="Noticia 2" />
+            <div class="news-content">
+              <h3 class="news-title">Festival de cine</h3>
+              <p class="news-excerpt">Cobertura especial del festival y las películas premiadas que no te puedes perder.</p>
+            </div>
+          </article>
+          <article class="news-card">
+            <img class="news-image" src="images/movie-3.svg" alt="Noticia 3" />
+            <div class="news-content">
+              <h3 class="news-title">Avances exclusivos</h3>
+              <p class="news-excerpt">Mira los avances exclusivos de los próximos estrenos y comparte tus favoritos.</p>
+            </div>
+          </article>
+          <article class="news-card">
+            <img class="news-image" src="images/movie-1.svg" alt="Noticia 4" />
+            <div class="news-content">
+              <h3 class="news-title">Entrevistas</h3>
+              <p class="news-excerpt">Charlamos con directores y protagonistas para conocer los secretos detrás de escena.</p>
+            </div>
+          </article>
+        </div>
+        <div class="section-actions">
+          <a class="cta" href="#">Ver más noticias</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Próximamente (rail horizontal) -->
+    <section class="soon-section">
+      <div class="container">
+        <h2 class="section-title">Próximamente</h2>
+      </div>
+      <div class="media-rail">
+        <div class="rail-fade left"></div>
+        <ul class="rail-list">
+          <li class="rail-item"><img src="images/movie-1.svg" alt="Póster 1"></li>
+          <li class="rail-item"><img src="images/movie-2.svg" alt="Póster 2"></li>
+          <li class="rail-item"><img src="images/movie-3.svg" alt="Póster 3"></li>
+          <li class="rail-item"><img src="images/movie-1.svg" alt="Póster 4"></li>
+          <li class="rail-item"><img src="images/movie-2.svg" alt="Póster 5"></li>
+          <li class="rail-item"><img src="images/movie-3.svg" alt="Póster 6"></li>
+          <li class="rail-item"><img src="images/movie-1.svg" alt="Póster 7"></li>
+          <li class="rail-item"><img src="images/movie-2.svg" alt="Póster 8"></li>
+        </ul>
+        <div class="rail-fade right"></div>
+      </div>
+    </section>
+
+    <!-- Planes -->
+    <section class="plans-section">
+      <div class="container">
+        <h2 class="section-title">Planes</h2>
+        <div class="plans-grid">
+          <article class="plan-card">
+            <h3 class="plan-name">Plan bronce</h3>
+            <p class="plan-price">$3.499</p>
+            <ul class="plan-features">
+              <li>2 entradas al mes</li>
+              <li>10% descuento en combos</li>
+              <li>Beneficios básicos</li>
+            </ul>
+            <button class="btn">Elegir plan</button>
+          </article>
+          <article class="plan-card featured">
+            <h3 class="plan-name">Plan dorado</h3>
+            <p class="plan-price">$9.999</p>
+            <ul class="plan-features">
+              <li>Entradas ilimitadas</li>
+              <li>30% descuento en combos</li>
+              <li>Acceso anticipado a estrenos</li>
+            </ul>
+            <button class="btn">Contratar</button>
+          </article>
+          <article class="plan-card">
+            <h3 class="plan-name">Plan plateado</h3>
+            <p class="plan-price">$6.499</p>
+            <ul class="plan-features">
+              <li>6 entradas al mes</li>
+              <li>20% descuento en combos</li>
+              <li>Selección de asientos preferenciales</li>
+            </ul>
+            <button class="btn">Elegir plan</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer rojo con columnas -->
+    <section class="footer-band">
+      <div class="container">
+        <div class="footer-columns">
+          <div>
+            <h4>Películas</h4>
+            <ul>
+              <li><a href="#">Cartelera</a></li>
+              <li><a href="#">Próximos estrenos</a></li>
+              <li><a href="#">Promociones</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Ayuda</h4>
+            <ul>
+              <li><a href="#">Preguntas frecuentes</a></li>
+              <li><a href="#">Soporte</a></li>
+              <li><a href="#">Contacto</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Nosotros</h4>
+            <ul>
+              <li><a href="#">Quiénes somos</a></li>
+              <li><a href="#">Trabaja con nosotros</a></li>
+              <li><a href="#">Prensa</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="brand-mini">
+            <img src="images/logo-red.svg" alt="Películas" />
+            <span>Películas</span>
+          </div>
+          <p>© 2025 Películas — @CINEFAN</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2025 Películas - Todos los derechos reservados</p>
+      </div>
+    </footer>
+  <!-- Cambiar a scroll-snap version para pruebas -->
+  <script src="js/carousel.snap.js"></script>
+  <script src="js/ui.js"></script>
+  </body>
+</html>

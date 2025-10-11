@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Películas - Inicio</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <!-- DEV-ONLY: Fallback para Live Server. Si estás viendo este HTML con Live Server (puerto 5500),
+         reescribimos las rutas absolutas (/css, /images, /js) para que apunten al árbol de 'static/'.
+         Esto NO afecta cuando ejecutas la app en Spring Boot (puerto 8080, etc.). -->
+    <script>
+      (function(){
+        try {
+          if (location.port === '5500') {
+            // CSS principal
+            var link = document.querySelector('link[href="/css/styles.css"]');
+            if (link) link.href = '/peliculas/src/main/resources/static/css/styles.css';
+
+            // JS del carrusel
+            var script = document.querySelector('script[src="/js/carousel.js"]');
+            if (script) script.src = '/peliculas/src/main/resources/static/js/carousel.js';
+
+            // Imágenes
+            document.querySelectorAll('img[src^="/images/"]').forEach(function(img){
+              img.src = img.src.replace('/images/', '/peliculas/src/main/resources/static/images/');
+            });
+          }
+        } catch(e) { /* no-op en producción */ }
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand-wrap">
+          <img src="/images/logo-red.svg" alt="Películas" class="brand-logo" />
+          <h1 class="brand">Películas</h1>
+        </div>
+        <nav class="main-nav">
+          <a href="#">Inicio</a>
+          <a href="#">Cartelera</a>
+          <a href="#">Contacto</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="hero">
+      <div class="container">
+        <h2 class="hero-title">Tu cine favorito, ahora en línea</h2>
+        <p class="hero-subtitle">Explora las últimas películas, horarios y compra tus entradas fácilmente.</p>
+        <a class="cta" href="#">Ver cartelera</a>
+      </div>
+    </main>
+
+    <!-- Carousel de películas -->
+    <section class="carousel-section">
+      <div class="container">
+        <div class="carousel" id="movieCarousel" aria-roledescription="carousel">
+          <button class="carousel-btn prev" aria-label="Anterior">‹</button>
+          <div class="carousel-viewport">
+            <ul class="carousel-track" role="list">
+              <li class="slide active" role="listitem" tabindex="0">
+                <img src="/images/movie-1.svg" alt="Película 1">
+                <div class="slide-info">
+                  <h4>Película 1</h4>
+                  <p>Acción • 2025</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="/images/movie-2.svg" alt="Película 2">
+                <div class="slide-info">
+                  <h4>Película 2</h4>
+                  <p>Drama • 2024</p>
+                </div>
+              </li>
+              <li class="slide" role="listitem" tabindex="0">
+                <img src="/images/movie-3.svg" alt="Película 3">
+                <div class="slide-info">
+                  <h4>Película 3</h4>
+                  <p>Comedia • 2023</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <button class="carousel-btn next" aria-label="Siguiente">›</button>
+          <div class="carousel-dots" role="tablist" aria-label="Seleccionar película">
+            <button class="dot active" data-index="0" aria-label="Ir a Película 1"></button>
+            <button class="dot" data-index="1" aria-label="Ir a Película 2"></button>
+            <button class="dot" data-index="2" aria-label="Ir a Película 3"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features container">
+      <article class="feature">
+        <h3>Cartelera</h3>
+        <p>Consulta las funciones diarias y filtra por sala o género.</p>
+      </article>
+      <article class="feature">
+        <h3>Comprar entradas</h3>
+        <p>Selecciona butacas y paga de forma segura.</p>
+      </article>
+      <article class="feature">
+        <h3>Promociones</h3>
+        <p>Aprovecha descuentos y paquetes familiares.</p>
+      </article>
+    </section>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2025 Películas - Todos los derechos reservados</p>
+      </div>
+    </footer>
+    <script src="/js/carousel.js"></script>
+  </body>
+</html>

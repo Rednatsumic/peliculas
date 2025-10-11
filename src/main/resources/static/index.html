@@ -19,6 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="./config.js"></script>
   </head>
   <body>
     <header class="site-header">
@@ -337,11 +338,17 @@
       if (!isPages) return;
       var baseParts = location.pathname.split('/').filter(Boolean);
       var base = baseParts.length ? '/' + baseParts[0] + '/' : '/';
+      var cfg = window.APP_CONFIG || {}; var backend = cfg.backendBase || null;
       document.querySelectorAll('a[href^="/"]').forEach(function(a){
         var href = a.getAttribute('href');
-        // En Pages, redirigimos /login y /register a la página estática
-        if (href === '/login') { a.setAttribute('href', './login.html#login'); return; }
-        if (href === '/register') { a.setAttribute('href', './login.html#register'); return; }
+        if (href === '/login') {
+          a.setAttribute('href', backend ? backend.replace(/\/$/, '') + '/login' : './login.html#login');
+          return;
+        }
+        if (href === '/register') {
+          a.setAttribute('href', backend ? backend.replace(/\/$/, '') + '/register' : './login.html#register');
+          return;
+        }
         if (href.startsWith('/app/')) return; // enlaces del backend real
         a.setAttribute('href', '.' + href);
       });

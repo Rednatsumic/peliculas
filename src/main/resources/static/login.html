@@ -6,6 +6,7 @@
   <title>Ingresar o Crear cuenta</title>
   <link rel="icon" href="images/logo-red.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/styles.css">
+  <script src="./config.js"></script>
   <style>
     .auth { min-height: 100vh; display:grid; place-items:center; background:#0a0a0a; }
     .auth-card { width:min(560px, 94vw); background:#111; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1.25rem; color:#fff; box-shadow:0 20px 60px rgba(0,0,0,0.6); }
@@ -24,7 +25,8 @@
   </style>
   <script>
     // Página estática para GitHub Pages: UI de login/registro con tabs por hash (#login | #register)
-    function isPages(){ return /\.github\.io$/.test(location.hostname) || location.pathname.split('/').filter(Boolean).length > 1; }
+  function isPages(){ return /\.github\.io$/.test(location.hostname) || location.pathname.split('/').filter(Boolean).length > 1; }
+  function backendBase(){ return (window.APP_CONFIG && window.APP_CONFIG.backendBase) || null; }
     function setTabByHash(){
       const isReg = location.hash === '#register';
       document.getElementById('tab-login').classList.toggle('active', !isReg);
@@ -39,19 +41,28 @@
       document.getElementById('tab-login').addEventListener('click', function(){ location.hash = '#login'; });
       document.getElementById('tab-register').addEventListener('click', function(){ location.hash = '#register'; });
 
-      // Interceptar submits en Pages: solo demo estático
-      if (isPages()) {
+      // Si hay backend configurado, apuntar acciones al backend y no interceptar
+      var base = backendBase();
+      if (base) {
+        var loginForm = document.querySelector('#panel-login form');
+        var regForm = document.querySelector('#panel-register form');
+        if (loginForm) loginForm.setAttribute('action', base.replace(/\/$/, '') + '/login');
+        if (regForm) regForm.setAttribute('action', base.replace(/\/$/, '') + '/register');
+        var banner = document.getElementById('demo-banner');
+        if (banner) banner.style.display = 'none';
+      } else if (isPages()) {
+        // Interceptar submits en Pages cuando no hay backend desplegado
         const forms = document.querySelectorAll('form');
         forms.forEach(f => f.addEventListener('submit', function(e){
           e.preventDefault();
-          alert('Este es un demo estático en GitHub Pages. Para ingresar o crear cuenta, ejecuta el backend localmente (http://localhost:8080) o despliega el backend.');
+          alert('Este es un demo estático en GitHub Pages. Para ingresar o crear cuenta, ejecutá el backend local (http://localhost:8080) o desplegá el backend y configurá window.APP_CONFIG.backendBase.');
         }));
       }
     });
   </script>
 </head>
 <body>
-  <div class="banner">Demo estático — Los formularios requieren el backend corriendo (por ejemplo, en <a href="http://localhost:8080/login" target="_blank" rel="noopener">http://localhost:8080</a>).</div>
+  <div id="demo-banner" class="banner">Demo estático — Los formularios requieren el backend corriendo (por ejemplo, en <a href="http://localhost:8080/login" target="_blank" rel="noopener">http://localhost:8080</a>).</div>
   <main class="auth">
     <section class="auth-card">
       <div class="tabs">

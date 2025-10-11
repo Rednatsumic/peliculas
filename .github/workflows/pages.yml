@@ -28,7 +28,7 @@ jobs:
       - name: Preparar sitio estático
         run: |
           mkdir -p public
-          cp -r peliculas/src/main/resources/static/* public/
+          cp -r src/main/resources/static/* public/
       - name: Subir artefacto de Pages
         uses: actions/upload-pages-artifact@v3
         with:

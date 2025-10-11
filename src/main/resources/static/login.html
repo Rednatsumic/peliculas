@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ingresar o Crear cuenta</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="images/logo-red.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/styles.css">
   <style>
     .auth { min-height: 100vh; display:grid; place-items:center; background:#0a0a0a; }
     .auth-card { width:min(560px, 94vw); background:#111; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1.25rem; color:#fff; box-shadow:0 20px 60px rgba(0,0,0,0.6); }
@@ -16,68 +17,63 @@
     .auth-grid{ display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; }
     label{ display:block; color:rgba(255,255,255,0.9); margin-top:0.5rem; }
     input, select{ width:100%; padding:0.65rem 0.75rem; border-radius:6px; border:1px solid rgba(255,255,255,0.15); background:#0f0f0f; color:#fff; }
-    .actions{ margin-top:1rem; display:flex; justify-content:flex-end; align-items:center; gap:0.75rem; }
-    .hint { font-size:0.9rem; color:#ccc; }
+    .actions{ margin-top:1rem; display:flex; justify-content:space-between; align-items:center; gap:0.75rem; }
+    .note { font-size:0.9rem; color:#ccc; }
+    .banner { position:absolute; top:0; left:0; right:0; background:#2b2b2b; color:#fff; padding:0.5rem 1rem; text-align:center; border-bottom:1px solid rgba(255,255,255,0.1); font-size:0.95rem; }
+    .banner a { color:#ff4d4f; }
   </style>
   <script>
-    // Toggle simple entre pestañas Login / Registro
-    document.addEventListener('DOMContentLoaded', () => {
-      const showRegister = /*[[${showRegister}]]*/ false; // Thymeleaf inyecta true/false
-      const tabLogin = document.getElementById('tab-login');
-      const tabReg = document.getElementById('tab-register');
-      const panelLogin = document.getElementById('panel-login');
-      const panelReg = document.getElementById('panel-register');
-      const setTab = (isReg) => {
-        tabLogin.classList.toggle('active', !isReg);
-        tabReg.classList.toggle('active', isReg);
-        panelLogin.classList.toggle('active', !isReg);
-        panelReg.classList.toggle('active', isReg);
-      };
-      tabLogin?.addEventListener('click', () => setTab(false));
-      tabReg?.addEventListener('click', () => setTab(true));
-      setTab(showRegister === true);
+    // Página estática para GitHub Pages: UI de login/registro con tabs por hash (#login | #register)
+    function isPages(){ return /\.github\.io$/.test(location.hostname) || location.pathname.split('/').filter(Boolean).length > 1; }
+    function setTabByHash(){
+      const isReg = location.hash === '#register';
+      document.getElementById('tab-login').classList.toggle('active', !isReg);
+      document.getElementById('tab-register').classList.toggle('active', isReg);
+      document.getElementById('panel-login').classList.toggle('active', !isReg);
+      document.getElementById('panel-register').classList.toggle('active', isReg);
+    }
+    window.addEventListener('hashchange', setTabByHash);
+    document.addEventListener('DOMContentLoaded', function(){
+      // Inicializa tabs
+      setTabByHash();
+      document.getElementById('tab-login').addEventListener('click', function(){ location.hash = '#login'; });
+      document.getElementById('tab-register').addEventListener('click', function(){ location.hash = '#register'; });
+
+      // Interceptar submits en Pages: solo demo estático
+      if (isPages()) {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(f => f.addEventListener('submit', function(e){
+          e.preventDefault();
+          alert('Este es un demo estático en GitHub Pages. Para ingresar o crear cuenta, ejecuta el backend localmente (http://localhost:8080) o despliega el backend.');
+        }));
+      }
     });
   </script>
-  <!--
-    Vista unificada: Ingresar y Crear cuenta en una sola página
-    - Ambos formularios envían a endpoints existentes (/login y /register)
-    - Se controla la pestaña por variable del modelo 'showRegister'
-    - Comentarios en español para facilitar mantenimiento
-  -->
 </head>
 <body>
+  <div class="banner">Demo estático — Los formularios requieren el backend corriendo (por ejemplo, en <a href="http://localhost:8080/login" target="_blank" rel="noopener">http://localhost:8080</a>).</div>
   <main class="auth">
-    <!-- Mensajes de feedback: éxito (verificación ok) o errores -->
-    <div style="position:absolute;top:1rem;left:0;right:0;display:grid;place-items:center;">
-      <p th:if="${message}" th:text="${message}" style="background:#123; color:#9fe; padding:0.5rem 0.75rem; border-radius:8px; border:1px solid #256; width:min(560px,94vw);"></p>
-      <p th:if="${error}" th:text="${error}" style="background:#311; color:#fec; padding:0.5rem 0.75rem; border-radius:8px; border:1px solid #622; width:min(560px,94vw);"></p>
-    </div>
-
     <section class="auth-card">
       <div class="tabs">
         <div id="tab-login" class="tab">Ingresar</div>
         <div id="tab-register" class="tab">Crear cuenta</div>
       </div>
 
-      <!-- Panel Ingresar -->
       <div id="panel-login" class="panel">
         <form method="post" action="/login">
-          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
           <label for="l-username">Usuario</label>
           <input id="l-username" name="username" autocomplete="username" required>
           <label for="l-password">Contraseña</label>
           <input id="l-password" name="password" type="password" autocomplete="current-password" required>
-          <div class="actions">
-            <span class="hint">¿No tenés cuenta? Hacé clic en “Crear cuenta”.</span>
+          <div class="actions" style="justify-content:flex-end;">
+            <a class="note" href="./">Volver al inicio</a>
             <button class="btn" type="submit">Entrar</button>
           </div>
         </form>
       </div>
 
-      <!-- Panel Registro -->
       <div id="panel-register" class="panel">
         <form method="post" action="/register">
-          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
           <div class="auth-grid">
             <div>
               <label for="r-username">Usuario</label>
@@ -100,11 +96,13 @@
               </select>
             </div>
           </div>
-          <div class="actions" style="justify-content:space-between;">
+          <div class="actions">
             <label style="display:flex;align-items:center;gap:6px;font-size:0.9rem;">
               <input type="checkbox" name="notify" checked>
               Quiero recibir novedades de nuevos estrenos
             </label>
+            <div style="flex:1"></div>
+            <a class="note" href="./">Volver al inicio</a>
             <button class="btn" type="submit">Registrarme</button>
           </div>
         </form>

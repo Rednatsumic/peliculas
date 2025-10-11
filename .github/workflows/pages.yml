@@ -29,6 +29,8 @@ jobs:
         run: |
           mkdir -p public
           cp -r src/main/resources/static/* public/
+          # Evita que GitHub Pages procese con Jekyll (por si hay paths con _)
+          touch public/.nojekyll
       - name: Subir artefacto de Pages
         uses: actions/upload-pages-artifact@v3
         with:

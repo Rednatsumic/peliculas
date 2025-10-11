@@ -20,7 +20,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // Definimos reglas de autorización y páginas de login/logout
+        // Reglas de autorización y páginas de login/logout
+        // - Rutas estáticas y registro: públicas
+        // - /app/** requiere autenticación
+        // - Login en /login, logout en /logout
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/index.html", "/css/**", "/js/**", "/images/**", "/h2/**", "/register", "/signup").permitAll()
@@ -36,7 +39,9 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .permitAll()
             )
-            // Permitir h2-console en iframes y excluir su ruta de CSRF
+            // Seguridad adicional
+            // - Permitir h2-console en iframes (sameOrigin)
+            // - Excluir /h2/** del CSRF para poder usar la consola
             .headers(h -> h.frameOptions(frame -> frame.sameOrigin()))
             .csrf(csrf -> csrf.ignoringRequestMatchers("/h2/**"));
         return http.build();

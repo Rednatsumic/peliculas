@@ -21,12 +21,17 @@ public class DbUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        // Busca el usuario en la base; si no existe, lanza excepción estándar de Spring Security
         return repo.findByUsername(username)
-            .map(ua -> User.withUsername(ua.getUsername())
-                .password(ua.getPasswordHash())
-                .roles("USER")
-                .disabled(!ua.isEnabled())
-                .build())
+            .map(ua ->
+                // Construye un UserDetails con rol por defecto "USER"
+                User.withUsername(ua.getUsername())
+                    .password(ua.getPasswordHash())
+                    .roles("USER")
+                    // Si la cuenta no está verificada, quedará deshabilitada y no permitirá login
+                    .disabled(!ua.isEnabled())
+                    .build()
+            )
             .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
     }
 }

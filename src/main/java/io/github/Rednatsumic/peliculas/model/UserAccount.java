@@ -32,4 +32,11 @@ public class UserAccount {
     @Column(nullable = false)
     @Builder.Default
     private boolean enabled = true;
+
+    /**
+     * Preferencia del usuario para recibir notificaciones de nuevos estrenos.
+     */
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean notifyNewReleases = true;
 }

@@ -339,7 +339,10 @@
       var base = baseParts.length ? '/' + baseParts[0] + '/' : '/';
       document.querySelectorAll('a[href^="/"]').forEach(function(a){
         var href = a.getAttribute('href');
-        if (href.startsWith('/login') || href.startsWith('/register') || href.startsWith('/app/')) return; // backend
+        // En Pages, redirigimos /login y /register a la página estática
+        if (href === '/login') { a.setAttribute('href', './login.html#login'); return; }
+        if (href === '/register') { a.setAttribute('href', './login.html#register'); return; }
+        if (href.startsWith('/app/')) return; // enlaces del backend real
         a.setAttribute('href', '.' + href);
       });
     })();

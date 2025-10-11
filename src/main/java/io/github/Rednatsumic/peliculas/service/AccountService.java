@@ -6,7 +6,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.github.Rednatsumic.peliculas.model.Plan;
 import io.github.Rednatsumic.peliculas.model.UserAccount;
+import io.github.Rednatsumic.peliculas.model.VerificationToken;
 import io.github.Rednatsumic.peliculas.repo.UserAccountRepository;
+import io.github.Rednatsumic.peliculas.repo.VerificationTokenRepository;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -21,9 +23,18 @@ public class AccountService {
 
     private final UserAccountRepository repo;
     private final PasswordEncoder encoder;
+    private final VerificationTokenRepository tokenRepo;
+    private final MailService mailService;
 
+    public static final long TOKEN_TTL_SECONDS = 24 * 3600; // 24h
+
+    /**
+     * Registro de usuario con verificación por email.
+     * - Crea el usuario deshabilitado
+     * - Genera un token y lo envía por correo
+     */
     @Transactional
-    public UserAccount register(String username, String email, String rawPassword, Plan plan) {
+    public UserAccount register(String username, String email, String rawPassword, Plan plan, boolean notify) {
         if (repo.existsByUsername(username)) {
             throw new IllegalArgumentException("Usuario ya existe");
         }
@@ -35,8 +46,60 @@ public class AccountService {
             .email(email)
             .passwordHash(encoder.encode(rawPassword))
             .plan(plan)
-            .enabled(true)
+            .enabled(false)
+            .notifyNewReleases(notify)
             .build();
-        return repo.save(ua);
+        ua = repo.save(ua);
+
+        // Generar token y enviar email
+    // Generamos un token con UUID y un código de 6 dígitos
+    VerificationToken token = VerificationToken.forUser(ua.getId(), TOKEN_TTL_SECONDS);
+        tokenRepo.save(token);
+        String verifyUrl = "http://localhost:8080/verify?token=" + token.getToken();
+    String body = "Hola " + username + ",\n\n" +
+        "¡Gracias por registrarte! Tenés dos opciones para verificar tu cuenta:\n" +
+        "1) Clic en: " + verifyUrl + "\n" +
+        "2) Ingresá este código en la pantalla de verificación: " + token.getCode() + "\n\n" +
+        "Si no fuiste vos, ignorá este mensaje.";
+        mailService.send(email, "Confirma tu correo — Películas", body);
+        return ua;
+    }
+
+    /**
+     * Verifica el token recibido por email, habilitando la cuenta.
+     */
+    @Transactional
+    public boolean verify(String token) {
+        VerificationToken vt = tokenRepo.findByToken(token)
+            .orElseThrow(() -> new IllegalArgumentException("Token inválido"));
+        if (vt.isUsed() || vt.getExpiresAt().isBefore(java.time.Instant.now())) {
+            throw new IllegalArgumentException("Token expirado o ya usado");
+        }
+        UserAccount ua = repo.findById(vt.getUserId())
+            .orElseThrow(() -> new IllegalStateException("Usuario no encontrado para el token"));
+        ua.setEnabled(true);
+        repo.save(ua);
+        vt.setUsed(true);
+        tokenRepo.save(vt);
+        return true;
+    }
+
+    /**
+     * Verificación alternativa por código de 6 dígitos (sin link).
+     */
+    @Transactional
+    public boolean verifyCode(String code) {
+        VerificationToken vt = tokenRepo.findByCode(code)
+            .orElseThrow(() -> new IllegalArgumentException("Código inválido"));
+        if (vt.isUsed() || vt.getExpiresAt().isBefore(java.time.Instant.now())) {
+            throw new IllegalArgumentException("Código expirado o ya usado");
+        }
+        UserAccount ua = repo.findById(vt.getUserId())
+            .orElseThrow(() -> new IllegalStateException("Usuario no encontrado para el código"));
+        ua.setEnabled(true);
+        repo.save(ua);
+        vt.setUsed(true);
+        tokenRepo.save(vt);
+        return true;
     }
 }

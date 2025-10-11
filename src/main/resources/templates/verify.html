@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Verificar cuenta</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .auth { min-height: 100vh; display:grid; place-items:center; background:#0a0a0a; }
+    .auth-card { width:min(420px, 92vw); background:#111; border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1.5rem; color:#fff; box-shadow:0 20px 60px rgba(0,0,0,0.6); }
+    .auth-card h1{ margin:0 0 1rem; font-size:1.5rem; }
+    .auth-card input{ width:100%; margin-top:0.25rem; padding:0.65rem 0.75rem; border-radius:6px; border:1px solid rgba(255,255,255,0.15); background:#0f0f0f; color:#fff; letter-spacing:3px; text-align:center; }
+    .auth-actions{ margin-top:1rem; display:flex; justify-content:space-between; align-items:center; }
+    .auth a{ color:#ff0000; text-decoration:none; }
+  </style>
+  <!-- Esta vista permite ingresar el código de 6 dígitos enviado por email -->
+  <!-- Alternativamente, el usuario puede hacer clic en el link del email (\n/verify?token=...) -->
+</head>
+<body>
+  <main class="auth">
+    <form class="auth-card" method="post" action="/verify-code">
+      <h1>Verificar cuenta</h1>
+      <p th:if="${error}" th:text="${error}" style="color:#ff6; background:#331; padding:0.5rem; border-radius:6px; margin-bottom:0.5rem;"></p>
+      <label for="code">Código de 6 dígitos</label>
+      <input id="code" name="code" maxlength="6" pattern="\d{6}" placeholder="000000" required>
+      <div class="auth-actions">
+        <a href="/login">Ir a ingresar</a>
+        <button class="btn" type="submit">Verificar</button>
+      </div>
+    </form>
+  </main>
+  </body>
+  </html>

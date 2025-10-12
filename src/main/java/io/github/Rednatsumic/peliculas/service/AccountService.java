@@ -28,7 +28,7 @@ public class AccountService {
 
     public static final long TOKEN_TTL_SECONDS = 24 * 3600; // 24h
     private static final java.util.regex.Pattern USERNAME_PATTERN = java.util.regex.Pattern.compile("^[a-zA-Z0-9._-]{3,20}$");
-    private static final java.util.regex.Pattern PASSWORD_PATTERN = java.util.regex.Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@!#$%&*._-]).{8,64}$");
+    private static final java.util.regex.Pattern PASSWORD_PATTERN = java.util.regex.Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@!#$%&*._-]).{10,20}$");
     private static final java.util.Set<String> BANNED = java.util.Set.of(
         // Lista corta de palabras a evitar (ampliable). Se valida sobre username normalizado (sin tildes).
         "mierda", "idiota", "tonto", "estupido", "puta", "puto", "caca", "pedo", "xxx", "porn"
@@ -52,7 +52,7 @@ public class AccountService {
             throw new IllegalArgumentException("Email inválido");
         }
         if (rawPassword == null || !PASSWORD_PATTERN.matcher(rawPassword).matches()) {
-            throw new IllegalArgumentException("Contraseña inválida: mínimo 8 caracteres e incluir minúscula, MAYÚSCULA, número y al menos un símbolo (@, !, #, $, %, &, *, ., _ o -)");
+            throw new IllegalArgumentException("Contraseña inválida: entre 10 y 20 caracteres e incluir minúscula, MAYÚSCULA, número y al menos un símbolo (@, !, #, $, %, &, *, ., _ o -)");
         }
         if (repo.existsByUsername(username)) {
             throw new IllegalArgumentException("Usuario ya existe");

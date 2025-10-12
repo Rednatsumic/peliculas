@@ -81,7 +81,7 @@
           <div class="auth-grid">
             <div>
               <label for="r-username">Usuario</label>
-              <input id="r-username" name="username" required>
+              <input id="r-username" name="username" required pattern="[A-Za-z0-9._-]{3,20}" title="Entre 3 y 20 caracteres. Letras, números, punto, guion y guion bajo.">
             </div>
             <div>
               <label for="r-email">Email</label>
@@ -89,7 +89,7 @@
             </div>
             <div>
               <label for="r-password">Contraseña</label>
-              <input id="r-password" name="password" type="password" required>
+              <input id="r-password" name="password" type="password" required pattern="(?=.*[A-Za-z])(?=.*\\d)(?=.*[@!#$%&*._-]).{8,64}" title="Mínimo 8 caracteres, incluir letras, números y al menos un símbolo (@ ! # $ % & * . _ -)">
             </div>
             <div>
               <label for="r-plan">Plan</label>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Método de pago</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>.auth{min-height:100vh;display:grid;place-items:center;background:#0a0a0a}.card{width:min(520px,92vw);background:#111;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.25rem;color:#fff}</style>
+</head>
+<body>
+  <main class="auth">
+    <section class="card">
+      <h1>Método de pago</h1>
+      <p th:if="${message}" th:text="${message}" style="color:#9fe;background:#123;padding:.5rem;border-radius:6px"></p>
+      <p th:if="${error}" th:text="${error}" style="color:#fec;background:#311;padding:.5rem;border-radius:6px"></p>
+      <form method="post" th:object="${payment}">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <label>Nombre y apellido
+          <input th:field="*{cardHolder}" required>
+        </label>
+        <label>Número de tarjeta
+          <input th:field="*{cardNumber}" inputmode="numeric" placeholder="4111 1111 1111 1111" required>
+        </label>
+        <div style="display:flex;gap:.5rem">
+          <label>Mes
+            <input th:field="*{expMonth}" placeholder="MM" required>
+          </label>
+          <label>Año
+            <input th:field="*{expYear}" placeholder="YY" required>
+          </label>
+          <label>CVC
+            <input th:field="*{cvc}" placeholder="123" required>
+          </label>
+        </div>
+        <div style="margin-top:1rem;display:flex;justify-content:space-between;align-items:center">
+          <a href="/app/catalog">Volver al catálogo</a>
+          <button class="btn" type="submit">Guardar método de pago</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mejora para ver esta película</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>.auth{min-height:100vh;display:grid;place-items:center;background:#0a0a0a}.card{width:min(520px,92vw);background:#111;border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.25rem;color:#fff}</style>
+</head>
+<body>
+  <main class="auth">
+    <section class="card">
+      <h1 th:text="${movie.title}"></h1>
+      <p th:text="${upsell}"></p>
+      <div style="display:flex;gap:.5rem;justify-content:flex-end">
+        <a class="btn" href="/app/payment">Cargar método de pago</a>
+        <a class="btn" href="/app/catalog">Ver catálogo</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

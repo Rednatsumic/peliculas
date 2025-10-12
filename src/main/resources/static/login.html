@@ -34,12 +34,25 @@
       document.getElementById('panel-login').classList.toggle('active', !isReg);
       document.getElementById('panel-register').classList.toggle('active', isReg);
     }
-    window.addEventListener('hashchange', setTabByHash);
+  window.addEventListener('hashchange', setTabByHash);
     document.addEventListener('DOMContentLoaded', function(){
       // Inicializa tabs
       setTabByHash();
       document.getElementById('tab-login').addEventListener('click', function(){ location.hash = '#login'; });
       document.getElementById('tab-register').addEventListener('click', function(){ location.hash = '#register'; });
+
+      // Validación ligera en cliente (demo)
+      const banned = ['mierda','idiota','tonto','estupido','puta','puto','caca','pedo','xxx','porn'];
+      function hasBadWord(v){ v = (v||'').toLowerCase(); return banned.some(b => v.includes(b)); }
+      const rUser = document.getElementById('r-username');
+      const rPass = document.getElementById('r-password');
+      function validateClient(e){
+        if (hasBadWord(rUser.value)) { e.preventDefault(); alert('El nombre de usuario no está permitido. Elegí otro por favor.'); return false; }
+        const pass = rPass.value || '';
+        const ok = /[A-Za-z]/.test(pass) && /\d/.test(pass) && /[@!#$%&*._-]/.test(pass) && pass.length >= 8;
+        if (!ok){ e.preventDefault(); alert('Contraseña inválida: mínimo 8 caracteres, incluir letras, números y al menos un símbolo.'); return false; }
+        return true;
+      }
 
       // Si hay backend configurado, apuntar acciones al backend y no interceptar
       var base = backendBase();
@@ -48,12 +61,14 @@
         var regForm = document.querySelector('#panel-register form');
         if (loginForm) loginForm.setAttribute('action', base.replace(/\/$/, '') + '/login');
         if (regForm) regForm.setAttribute('action', base.replace(/\/$/, '') + '/register');
+        if (regForm) regForm.addEventListener('submit', validateClient);
         var banner = document.getElementById('demo-banner');
         if (banner) banner.style.display = 'none';
       } else if (isPages()) {
         // Interceptar submits en Pages cuando no hay backend desplegado
         const forms = document.querySelectorAll('form');
         forms.forEach(f => f.addEventListener('submit', function(e){
+          if (f.closest('#panel-register')) { if (!validateClient(e)) return; }
           e.preventDefault();
           alert('Este es un demo estático en GitHub Pages. Para ingresar o crear cuenta, ejecutá el backend local (http://localhost:8080) o desplegá el backend y configurá window.APP_CONFIG.backendBase.');
         }));

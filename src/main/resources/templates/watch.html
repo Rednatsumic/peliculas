@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${movie.title} + ' — Reproducir'"></title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>.wrap{min-height:100vh;background:#000;color:#fff}.player{max-width:980px;margin:0 auto;padding:1rem}</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="player">
+      <h1 th:text="${movie.title}"></h1>
+      <div th:if="${movie.trailerUrl}">
+        <iframe th:src="${movie.trailerUrl}" width="100%" height="540" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+      <div th:if="${movie.trailerUrl} == null">
+        <img th:if="${movie.posterUrl}" th:src="${movie.posterUrl}" alt="Poster" style="max-width:100%">
+        <p>Reproducción en curso…</p>
+      </div>
+      <a class="btn" href="/app/catalog" style="margin-top:1rem;display:inline-block">Volver</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -39,4 +39,13 @@ public class UserAccount {
     @Column(nullable = false)
     @Builder.Default
     private boolean notifyNewReleases = true;
+
+    // Estado de suscripción y método de pago (demo). No se almacena tarjeta completa.
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean subscriptionActive = false; // Activa una vez cargado el método de pago
+
+    private String cardBrand;   // p.ej. VISA/MASTERCARD (derivado)
+    private String cardLast4;   // últimos 4 dígitos
+    private java.time.Instant paymentAddedAt; // cuándo se cargó
 }

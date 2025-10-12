@@ -27,6 +27,12 @@ public class AccountService {
     private final MailService mailService;
 
     public static final long TOKEN_TTL_SECONDS = 24 * 3600; // 24h
+    private static final java.util.regex.Pattern USERNAME_PATTERN = java.util.regex.Pattern.compile("^[a-zA-Z0-9._-]{3,20}$");
+    private static final java.util.regex.Pattern PASSWORD_PATTERN = java.util.regex.Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@!#$%&*._-]).{8,64}$");
+    private static final java.util.Set<String> BANNED = java.util.Set.of(
+        // Lista corta de palabras a evitar (ampliable). Se valida sobre username normalizado (sin tildes).
+        "mierda", "idiota", "tonto", "estupido", "puta", "puto", "caca", "pedo", "xxx", "porn"
+    );
 
     /**
      * Registro de usuario con verificación por email.
@@ -35,6 +41,19 @@ public class AccountService {
      */
     @Transactional
     public UserAccount register(String username, String email, String rawPassword, Plan plan, boolean notify) {
+        // Validaciones de username/email/password en servidor
+        if (username == null || !USERNAME_PATTERN.matcher(username).matches()) {
+            throw new IllegalArgumentException("Usuario inválido: usa 3-20 caracteres (letras, números, punto, guion o guion bajo)");
+        }
+        if (containsBanned(username) || isReserved(username)) {
+            throw new IllegalArgumentException("El nombre de usuario no está permitido. Elegí otro por favor");
+        }
+        if (email == null || !email.contains("@")) {
+            throw new IllegalArgumentException("Email inválido");
+        }
+        if (rawPassword == null || !PASSWORD_PATTERN.matcher(rawPassword).matches()) {
+            throw new IllegalArgumentException("Contraseña inválida: mínimo 8 caracteres, incluir letras, números y al menos un símbolo (@, !, #, $, %, &, *, ., _ o -)");
+        }
         if (repo.existsByUsername(username)) {
             throw new IllegalArgumentException("Usuario ya existe");
         }
@@ -63,6 +82,23 @@ public class AccountService {
         "Si no fuiste vos, ignorá este mensaje.";
         mailService.send(email, "Confirma tu correo — Películas", body);
         return ua;
+    }
+
+    private boolean containsBanned(String s){
+        if (s == null) return false;
+        String norm = normalize(s);
+        for (String b : BANNED){
+            if (norm.contains(b)) return true;
+        }
+        return false;
+    }
+    private boolean isReserved(String s){
+        String v = s.toLowerCase();
+        return v.startsWith("admin") || v.startsWith("root") || v.equals("soporte") || v.equals("support");
+    }
+    private String normalize(String input){
+        String n = java.text.Normalizer.normalize(input, java.text.Normalizer.Form.NFD);
+        return n.replaceAll("\\p{M}", "").toLowerCase();
     }
 
     /**

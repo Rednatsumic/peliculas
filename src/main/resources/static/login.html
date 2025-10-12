@@ -49,8 +49,8 @@
       function validateClient(e){
         if (hasBadWord(rUser.value)) { e.preventDefault(); alert('El nombre de usuario no está permitido. Elegí otro por favor.'); return false; }
         const pass = rPass.value || '';
-        const ok = /[A-Za-z]/.test(pass) && /\d/.test(pass) && /[@!#$%&*._-]/.test(pass) && pass.length >= 8;
-        if (!ok){ e.preventDefault(); alert('Contraseña inválida: mínimo 8 caracteres, incluir letras, números y al menos un símbolo.'); return false; }
+  const ok = /[a-z]/.test(pass) && /[A-Z]/.test(pass) && /\d/.test(pass) && /[@!#$%&*._-]/.test(pass) && pass.length >= 8;
+  if (!ok){ e.preventDefault(); alert('Contraseña inválida: mínimo 8 caracteres e incluir minúscula, MAYÚSCULA, número y al menos un símbolo.'); return false; }
         return true;
       }
 
@@ -111,7 +111,7 @@
             </div>
             <div>
               <label for="r-password">Contraseña</label>
-              <input id="r-password" name="password" type="password" required>
+              <input id="r-password" name="password" type="password" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@!#$%&*._-]).{8,64}" title="Mínimo 8 caracteres: incluir minúscula, MAYÚSCULA, número y al menos un símbolo (@ ! # $ % & * . _ -)">
             </div>
             <div>
               <label for="r-plan">Plan</label>
